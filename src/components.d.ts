@@ -10,6 +10,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     Coin: typeof import('./components/Coin.vue')['default']
     CoinDisplay: typeof import('./components/CoinDisplay.vue')['default']
+    FallingCoins: typeof import('./components/FallingCoins.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

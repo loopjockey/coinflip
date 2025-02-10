@@ -14,7 +14,7 @@
       )
 
       transition(name="fade")
-        .label(v-if="animatedCoins[i]") ★★★ 1/2 ★★★
+        .label(v-if="animatedCoins[i]") ★★★ 
 </template>
   
   <script lang="ts">
