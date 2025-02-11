@@ -118,7 +118,18 @@ export default {
 
 .coin:not(.animated):hover {
   box-shadow: 0 0 2em var(--rarity-shadow);
+  animation: jiggle 0.3s ease-in-out infinite alternate;
 }
+
+@keyframes jiggle {
+  0% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(5deg);
+  }
+}
+
 
 // Define rarity-based shadows
 .common {

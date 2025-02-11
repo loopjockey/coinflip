@@ -109,7 +109,7 @@ export default {
 }
 
 .container.raised {
-  transform: translateY(-8em) scale(1.2);
+  transform: translateY(-6em) scale(1.2);
 }
 
 // Define rarity-based shadow colors
@@ -137,24 +137,24 @@ export default {
 .container::after {
   content: "";
   position: absolute;
-  width: 8em;
-  height: 2em;
-  background: rgba(0, 0, 0, 0.2);
+  width: 6em;  // Reduce width for a tighter shadow
+  height: 1.5em;  // Make it smaller in height
+  background: rgba(0, 0, 0, 0.15);  // Reduce opacity
   border-radius: 50%;
-  bottom: -4em;
+  bottom: -3em;  // Move slightly closer to the coin
   left: 50%;
   transform: translateX(-50%) scale(1);
-  filter: blur(10px);
+  filter: blur(6px); // Reduce blur to keep it subtle
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease-in-out;
 }
 
 // Apply glow effect when raised
 .container.raised::after {
-  opacity: 1;
-  transform: translateX(-50%) scale(1.3);
+  opacity: 0.8; // Reduce max opacity
+  transform: translateX(-40%) scale(1.1);
   background: var(--rarity-shadow);
-  box-shadow: 0 0 0.1em var(--rarity-shadow), 0 0 0.2em var(--rarity-shadow);
+  box-shadow: 0 0 0.1em var(--rarity-shadow), 0 0 0.15em var(--rarity-shadow);
   animation: glowEffect 1.5s infinite alternate;
 }
 
@@ -201,7 +201,7 @@ export default {
 // Flip in animation with smooth opacity transition
 @keyframes flipIn {
   0% {
-    transform: rotateX(90deg) translateY(-50vh) scale(0);
+    transform: rotateX(90deg) translateY(-70vh) scale(0);
     opacity: 0;
   }
   10% {
