@@ -1,5 +1,5 @@
 <template lang="pug">
-.coin(:class="{ [type]: true, animated: animate }")
+.coin(:class="{ [type]: true, [rarity || 'uncommon']: true, animated: animate }")
   .face.front
     .symbol {{ symbol }}
     .circle
@@ -17,6 +17,13 @@ export default {
       required: true,
       validator: (value: string) =>
         ["pound", "dollar", "euro", "yen", "bitcoin"].includes(value),
+    },
+    rarity: {
+      type: String,
+      required: false,
+      default: null,
+      validator: (value: string | null) => 
+        !value || ['uncommon', 'common', 'rare', 'epic', 'legendary'].includes(value)
     },
     animate: {
       type: Boolean,
@@ -105,6 +112,48 @@ export default {
   height: 100%;
   position: absolute;
   transform-style: preserve-3d;
+  border-radius: 50%;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.coin:not(.animated):hover {
+  box-shadow: 0 0 2em var(--rarity-shadow);
+}
+
+// Define rarity-based shadows
+.common {
+  --rarity-shadow: rgba(200, 200, 200);
+}
+
+.uncommon {
+  --rarity-shadow: rgb(0, 218, 0);
+}
+
+.rare {
+  --rarity-shadow: rgba(50, 150, 255);
+}
+
+.epic {
+  --rarity-shadow: rgba(150, 50, 255);
+}
+
+.legendary {
+  --rarity-shadow: rgba(255, 215, 0);
+}
+
+// Animated coins get a glowing effect based on rarity
+.coin.animated {
+  box-shadow: 0
+}
+
+// Soft glowing animation for animated coins
+@keyframes glowEffect {
+  0% {
+    box-shadow: 0 0 1em var(--rarity-shadow), 0 0 2em var(--rarity-shadow);
+  }
+  100% {
+    box-shadow: 0 0 2em var(--rarity-shadow), 0 0 4em var(--rarity-shadow);
+  }
 }
 
 .face {

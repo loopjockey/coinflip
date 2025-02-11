@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <transition name="fade">
-      <component :is="currentComponent" />
-    </transition>
+    <CoinDisplay />
   </v-app>
 </template>
 
