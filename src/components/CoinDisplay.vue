@@ -5,26 +5,28 @@
       v-for="(coinType, i) in ['pound', 'dollar', 'euro', 'yen', 'bitcoin', 'dollar', 'pound', 'euro', 'yen', 'bitcoin']",
       :key="i",
       ref="coinRefs",
-      :class="{ raised: animatedCoins[i], [['common', 'uncommon',  'rare', 'epic', 'legendary'][i]]: true }",
+      :class="{ raised: animatedCoins[i], flipping: flippingCoins[i], [['common', 'uncommon', 'rare', 'epic', 'legendary'][i]]: true }",
+      :style="{ animationDelay: `${i * 150}ms` }",
       @click="toggleAnimation(i)"
     )
       Coin(
         :type="coinType",
-        :rarity="['common', 'uncommon',  'rare', 'epic', 'legendary'][i]"
+        :rarity="['common', 'uncommon', 'rare', 'epic', 'legendary'][i]",
         :animate="animatedCoins[i]",
         :raised="animatedCoins[i]"
       )
-      
+
       transition(name="fade")
         .label(v-if="animatedCoins[i]") ★★★
 </template>
   
   <script lang="ts">
-  import { ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
   setup() {
     const animatedCoins = ref<boolean[]>(new Array(10).fill(false));
+    const flippingCoins = ref<boolean[]>(new Array(10).fill(true)); // New flipping state
     const coinRefs = ref<(HTMLElement | null)[]>([]);
 
     const toggleAnimation = (i: number) => {
@@ -44,23 +46,34 @@ export default {
       const containerRect = container.getBoundingClientRect();
 
       const scrollLeft =
-        container.scrollLeft + coinRect.left - containerRect.left - containerWidth / 2 + coinRect.width / 2;
+        container.scrollLeft +
+        coinRect.left -
+        containerRect.left -
+        containerWidth / 2 +
+        coinRect.width / 2;
 
       container.scrollTo({ left: scrollLeft, behavior: "smooth" });
     };
 
     onMounted(() => {
       coinRefs.value = Array.from(document.querySelectorAll(".container"));
+
+      // Staggered removal of flipping effect
+      flippingCoins.value.forEach((_, i) => {
+        setTimeout(() => {
+          flippingCoins.value[i] = false; // Remove flipping one by one
+        }, i * 150 + 1000); // Staggered: delay + animation duration (1s)
+      });
     });
 
     return {
       animatedCoins,
+      flippingCoins,
       toggleAnimation,
       coinRefs,
     };
   },
 };
-
 </script>
   
   <style scoped lang="scss">
@@ -141,20 +154,19 @@ export default {
   opacity: 1;
   transform: translateX(-50%) scale(1.3);
   background: var(--rarity-shadow);
-  box-shadow: 0 0 1em var(--rarity-shadow), 0 0 3em var(--rarity-shadow);
+  box-shadow: 0 0 0.1em var(--rarity-shadow), 0 0 0.2em var(--rarity-shadow);
   animation: glowEffect 1.5s infinite alternate;
 }
 
 // Soft glowing animation
 @keyframes glowEffect {
   0% {
-    box-shadow: 0 0 1em var(--rarity-shadow), 0 0 2em var(--rarity-shadow);
+    box-shadow: 0 0 0.1em var(--rarity-shadow), 0 0 0.3em var(--rarity-shadow);
   }
   100% {
-    box-shadow: 0 0 2em var(--rarity-shadow), 0 0 4em var(--rarity-shadow);
+    box-shadow: 0 0 0.2em var(--rarity-shadow), 0 0 0.5em var(--rarity-shadow);
   }
 }
-
 
 .label {
   position: absolute;
@@ -177,6 +189,32 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+// Initial flip animation on mount
+.container.flipping {
+  animation: flipIn 1s ease-out both;
+  animation-delay: inherit; // Ensures staggered delays apply
+  opacity: 0; // Start invisible
+}
+
+// Flip in animation with smooth opacity transition
+@keyframes flipIn {
+  0% {
+    transform: rotateX(90deg) translateY(-50vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotateX(-10deg) translateY(10px) scale(1.1);
+    opacity: 1; // Fade in mid-animation
+  }
+  100% {
+    transform: rotateX(0deg) translateY(0) scale(1);
+    opacity: 1; // Fully visible when animation is done
+  }
 }
 </style>
   
