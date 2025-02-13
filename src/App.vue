@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <!--<router-view />-->
-    <CoinDisplay />
+    <router-view />
+    <!--<CoinDisplay />-->
   </v-app>
 </template>
