@@ -86,6 +86,7 @@ export default {
   white-space: nowrap;
   display: flex;
   align-items: center; /* Centers coins vertically */
+  background: radial-gradient(circle at center, #ffffff, #e0e0e0);
 }
 
 .wrapper {

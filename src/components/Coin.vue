@@ -123,10 +123,10 @@ export default {
 
 @keyframes jiggle {
   0% {
-    transform: rotateZ(-5deg);
+    transform: rotateZ(-5deg) scale(1.02);
   }
   100% {
-    transform: rotateZ(5deg);
+    transform: rotateZ(5deg) scale(1.04);
   }
 }
 
